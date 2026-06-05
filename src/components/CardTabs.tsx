@@ -14,7 +14,7 @@ import { useState } from "react";
  * (they become audience feature fodder). Contact content is passed in as `contact` so this
  * stays a thin, reusable tab shell.
  */
-const TABS = ["About", "Bio", "Contact"] as const;
+const TABS = ["Contact", "About", "Bio"] as const;
 type Tab = (typeof TABS)[number];
 
 export function CardTabs({ contact }: { contact: React.ReactNode }) {
