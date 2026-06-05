@@ -2,6 +2,7 @@ import { profile } from "@/data/profile";
 import { GradientHeader } from "@/components/GradientHeader";
 import { CardTabs } from "@/components/CardTabs";
 import { ContactRows } from "@/components/ContactRows";
+import { SaveToContactsButton } from "@/components/SaveToContactsButton";
 
 /**
  * ContactCard — the card shell.
@@ -20,6 +21,11 @@ export function ContactCard() {
       <GradientHeader>
         <CardTabs contact={<ContactRows />} />
       </GradientHeader>
+
+      {/* Save bar — outside the tabs so it stays visible on every tab. */}
+      <div className="bg-panel px-6 pt-2 pb-6">
+        <SaveToContactsButton className="inline-flex h-13 w-full items-center justify-center gap-2 rounded-full bg-accent px-6 text-[15px] font-semibold text-accent-foreground transition-opacity hover:opacity-90" />
+      </div>
     </div>
   );
 }

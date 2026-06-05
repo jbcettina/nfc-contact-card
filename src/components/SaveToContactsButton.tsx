@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
+import { LuUserPlus } from "react-icons/lu";
 import { profile } from "@/data/profile";
 import { buildVCard, vCardFileName } from "@/lib/vcard";
 
@@ -10,6 +11,9 @@ import { buildVCard, vCardFileName } from "@/lib/vcard";
  * The download trick: turn the vCard text into a Blob, make an object URL, click a temporary
  * <a download> link, then revoke the URL. This is what works consistently across iOS Safari
  * and Android Chrome — tapping the downloaded .vcf opens the OS "Add Contact" sheet.
+ *
+ * The save runs synchronously and self-contained, so a later delight feature (e.g. a confetti
+ * burst) can hook the success path here without touching or delaying the actual download.
  */
 export function SaveToContactsButton({ className }: { className?: string }) {
   const handleSave = useCallback(() => {
@@ -34,9 +38,10 @@ export function SaveToContactsButton({ className }: { className?: string }) {
       onClick={handleSave}
       className={
         className ??
-        "inline-flex h-12 items-center justify-center rounded-full bg-accent px-6 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90"
+        "inline-flex h-13 w-full items-center justify-center gap-2 rounded-full bg-accent px-6 text-[15px] font-semibold text-accent-foreground transition-opacity hover:opacity-90"
       }
     >
+      <LuUserPlus size={18} aria-hidden />
       Save to Contacts
     </button>
   );

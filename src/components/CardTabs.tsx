@@ -45,7 +45,7 @@ export function CardTabs({ contact }: { contact: React.ReactNode }) {
       </div>
 
       {/* White content panel — merges with the active tab above it. */}
-      <div className="min-h-52 bg-panel px-6 pt-5 pb-8">
+      <div className="min-h-52 bg-panel px-6 pt-5 pb-2">
         {active === "Contact" ? (
           contact
         ) : (
