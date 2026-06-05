@@ -61,6 +61,11 @@ a raw contact import.)
 - **No backend.** If you want dynamic features later (e.g. logging taps), add a Next.js route
   handler under `src/app/api/` — the convention is already stubbed. See [TECH.md](TECH.md).
 
+## Credits
+
+- Fist-bump intro animation from [LottieFiles](https://lottiefiles.com/free-animation/fist-bump-79hI3NROvn)
+  (Lottie Simple License). The asset is bundled in `public/animations/`.
+
 ## License
 
 [MIT](LICENSE) — fork it, ship it, make it yours.
