@@ -4,7 +4,6 @@ import { CardTabs } from "@/components/CardTabs";
 import { ContactRows } from "@/components/ContactRows";
 import { AboutPanel } from "@/components/AboutPanel";
 import { BioPanel } from "@/components/BioPanel";
-import { SaveToContactsButton } from "@/components/SaveToContactsButton";
 
 /**
  * ContactCard — the card shell.
@@ -23,11 +22,6 @@ export function ContactCard() {
       <GradientHeader>
         <CardTabs contact={<ContactRows />} about={<AboutPanel />} bio={<BioPanel />} />
       </GradientHeader>
-
-      {/* Save bar — outside the tabs so it stays visible on every tab. */}
-      <div className="bg-panel px-6 pt-2 pb-6 sm:px-7 sm:pb-7">
-        <SaveToContactsButton className="inline-flex h-13 w-full items-center justify-center gap-2 rounded-full bg-accent px-6 text-[15px] font-semibold text-accent-foreground transition-opacity hover:opacity-90 sm:h-14 sm:text-base" />
-      </div>
     </div>
   );
 }
