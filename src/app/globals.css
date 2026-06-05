@@ -1,53 +1,79 @@
 @import "tailwindcss";
 
 /*
- * Design tokens.
+ * Design tokens (Tier A — Rogie "Make this yours" card).
  *
- * Colors, radii, and shadows are defined here as CSS variables and exposed to Tailwind via
- * @theme, so a visual skin can be swapped by changing token values rather than rewriting
- * components. The card's --accent is overridden at runtime from src/data/profile.ts.
- * See TECH.md → "Theming via tokens".
+ * Everything themeable is a CSS variable so a palette can be swapped without touching
+ * components (the later theme switcher just overrides these — see the [data-theme] block).
+ * Components own LAYOUT and gradient positions; tokens own COLORS, radii, and shadows.
+ * See TECH.md → "Theming via tokens" and FOUNDATION-PLAN §4.
  */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Surfaces */
+  --page-bg: #ececec; /* light gray field the card sits on */
+  --panel: #ffffff; /* white content panel */
+  --foreground: #141414; /* near-black text */
+  --background: var(--panel);
 
-  /* Accent — default; the page sets this from profile.accent at runtime. */
-  --accent: #2563eb;
+  /* Type colors */
+  --name-color: #141414;
+  --title-color: #8a8a8a;
+  --icon-color: #6b6b6b; /* monochrome contact-row glyphs */
+
+  /* Pastel mesh-gradient stops (composed into radial-gradients by the header). */
+  --mesh-base: #f4ede7; /* warm cream base */
+  --mesh-peach: #ffe0c2; /* top-left */
+  --mesh-blue: #cfe0ff; /* top-right */
+  --mesh-pink: #ffc8e7; /* lower-right */
+
+  /* Accent — save action + active states. */
+  --accent: #1f1f1f;
   --accent-foreground: #ffffff;
 
-  /* Background behind the fist-bump intro overlay (retokenized in the skin pass). */
-  --intro-bg: #2563eb;
+  /* Background behind the fist-bump intro overlay — uses the warm mesh base. */
+  --intro-bg: var(--mesh-peach);
 
-  /* Surface tokens used by the card. */
-  --card-radius: 1.25rem;
-  --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 12px 32px rgba(0, 0, 0, 0.08);
-  --border: rgba(0, 0, 0, 0.08);
+  /* Shape */
+  --card-radius: 28px; /* outer card */
+  --panel-radius: 24px; /* content panel under the tabs */
+  --card-shadow: 0 2px 4px rgba(20, 20, 20, 0.04), 0 24px 48px -12px rgba(20, 20, 20, 0.18);
+  --border: rgba(20, 20, 20, 0.08);
+
+  /* Rhythm */
+  --row-h: 68px; /* contact-row height */
+}
+
+/*
+ * Alternate palette — proves the theme-switch path is a pure token swap (feature-loop ready).
+ * Apply with <element data-theme="ocean"> to recolor the mesh + accent live, no JS in the card.
+ */
+[data-theme="ocean"] {
+  --mesh-base: #eaf0f4;
+  --mesh-peach: #d6fff2; /* mint top-left */
+  --mesh-blue: #c2dbff; /* blue top-right */
+  --mesh-pink: #d8c8ff; /* lavender lower-right */
 }
 
 @theme inline {
+  --color-page-bg: var(--page-bg);
+  --color-panel: var(--panel);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-name: var(--name-color);
+  --color-title: var(--title-color);
+  --color-icon: var(--icon-color);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-border: var(--border);
   --radius-card: var(--card-radius);
+  --radius-panel: var(--panel-radius);
   --shadow-card: var(--card-shadow);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --border: rgba(255, 255, 255, 0.12);
-    --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px rgba(0, 0, 0, 0.5);
-  }
-}
-
 body {
-  background: var(--background);
+  background: var(--page-bg);
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
