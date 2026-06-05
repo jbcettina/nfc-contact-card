@@ -1,70 +1,89 @@
 /**
  * profile.ts — THE single source of truth for the contact card.
  *
- * This is the one file you edit to make the card yours. Every component reads from the
- * `profile` export below; nothing else hardcodes personal details. Update the fields, save,
- * and the whole card (and the Save-to-Contacts vCard) updates.
- *
- * Anything optional can be omitted — the UI only renders what's present.
+ * This is the one file you edit to make the card yours. Every part of the card and the
+ * Save-to-Contacts vCard reads from the `profile` export below; nothing else hardcodes
+ * personal details. Update the fields, save, and the whole card updates.
  */
 
-/** A single tappable link shown on the card (e.g. LinkedIn, GitHub, a portfolio). */
-export type ProfileLink = {
-  /** Visible label, e.g. "LinkedIn". */
-  label: string;
-  /** Full URL, e.g. "https://linkedin.com/in/you". */
+/**
+ * Keys for the social glyphs. Each maps to an icon in the registry
+ * (see src/components/icons.tsx). Add a key here + an entry there to support a new platform.
+ */
+export type IconKey =
+  | "x"
+  | "github"
+  | "linkedin"
+  | "instagram"
+  | "bluesky"
+  | "dribbble";
+
+/** A social profile: shown as @handle, but tappable to a real, resolvable URL. */
+export type Social = {
+  /** Platform name, e.g. "X" — also used as the vCard X-SOCIALPROFILE type. */
+  platform: string;
+  /** Display text, e.g. "@jbcettina". */
+  handle: string;
+  /** The resolvable link the handle opens, e.g. "https://x.com/jbcettina". */
   url: string;
+  /** Which glyph to render (see IconKey). */
+  icon: IconKey;
 };
+
+/** Selectable color theme — ties to the (later) palette switcher. */
+export type ThemeKey = "sunset" | "ocean";
 
 export type Profile = {
   /** Full name, shown as the card's headline. */
   name: string;
-  /** Role / job title, e.g. "Product Engineer". */
-  title?: string;
-  /** Company or organization. */
-  company?: string;
-  /** Primary email — powers tap-to-email and the vCard. */
-  email?: string;
-  /**
-   * Primary phone — powers tap-to-call and the vCard.
-   * Store it in international format (e.g. "+1 555 234 5678") so it dials correctly anywhere.
-   */
-  phone?: string;
-  /** Personal or company website (full URL). */
-  website?: string;
-  /** Short tagline / bio line shown under the name. */
-  tagline?: string;
+  /** Role / job title, shown muted under the name. */
+  title: string;
   /**
    * Avatar image. Put the file in `public/` and reference it from the site root,
-   * e.g. "/avatar.jpg". Leave undefined to fall back to initials.
+   * e.g. "/avatar.jpg". Set to null to show the placeholder squircle (initials).
    */
-  avatar?: string;
-  /** Extra links rendered as tappable rows. */
-  links?: ProfileLink[];
-  /**
-   * Accent color as a hex string (e.g. "#2563eb"). Drives the card's themeable accent via a
-   * CSS variable — see `src/app/globals.css` and the theming notes in TECH.md.
-   */
-  accent?: string;
+  avatar: string | null;
+  /** Real contact fields — these power tap-to-call / email and the saved vCard. */
+  contact: {
+    /** Store in international format (e.g. "+1 555 234 5678") so it dials anywhere. */
+    phone?: string;
+    email?: string;
+    /** Full URL, e.g. "https://example.com". */
+    website?: string;
+  };
+  /** Social rows — display a handle, carry a real URL (also saved into the vCard). */
+  socials: Social[];
+  /** Active color theme. Optional; defaults to the base palette. */
+  theme?: ThemeKey;
 };
 
 export const profile: Profile = {
   name: "Joel Cettina",
   title: "Engineering Leader",
-  company: "Acme Co.",
-  email: "jbcettina@gmail.com",
-  phone: "+1 555 234 5678",
-  website: "https://example.com",
-  tagline: "Idea → live in 60 minutes.",
-  // avatar: "/avatar.jpg", // drop a file in public/ and point here; omitted → initials
-  links: [
-    { label: "LinkedIn", url: "https://linkedin.com/in/jbcettina" },
-    { label: "GitHub", url: "https://github.com/jbcettina" },
+  avatar: null, // drop a file in public/ and point here (e.g. "/avatar.jpg")
+  contact: {
+    phone: "+1 555 234 5678",
+    email: "jbcettina@gmail.com",
+    website: "https://example.com",
+  },
+  socials: [
+    { platform: "X", handle: "@jbcettina", url: "https://x.com/jbcettina", icon: "x" },
+    {
+      platform: "GitHub",
+      handle: "@jbcettina",
+      url: "https://github.com/jbcettina",
+      icon: "github",
+    },
+    {
+      platform: "LinkedIn",
+      handle: "@jbcettina",
+      url: "https://linkedin.com/in/jbcettina",
+      icon: "linkedin",
+    },
   ],
-  accent: "#2563eb",
 };
 
-/** Initials derived from the name — used as the avatar fallback. */
+/** Initials derived from the name — used for the placeholder avatar squircle. */
 export function initials(name: string): string {
   return name
     .split(/\s+/)

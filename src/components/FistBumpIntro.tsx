@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import type { DotLottie } from "@lottiefiles/dotlottie-react";
-import { profile } from "@/data/profile";
 
 /**
  * FistBumpIntro — a full-screen intro overlay that plays the fist-bump animation once on a
@@ -96,8 +95,7 @@ export function FistBumpIntro({ children }: { children: React.ReactNode }) {
       {phase !== "done" && (
         <div
           aria-hidden
-          style={{ backgroundColor: profile.accent }}
-          className={`fixed inset-0 z-50 flex items-center justify-center transition-all duration-[400ms] ease-out ${
+          className={`fixed inset-0 z-50 flex items-center justify-center bg-[var(--intro-bg)] transition-all duration-[400ms] ease-out ${
             leaving ? "scale-110 opacity-0 pointer-events-none" : "scale-100 opacity-100"
           }`}
         >

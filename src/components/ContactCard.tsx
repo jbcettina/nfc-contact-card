@@ -1,89 +1,42 @@
-import Image from "next/image";
-import { profile, initials } from "@/data/profile";
+import { profile } from "@/data/profile";
 import { SaveToContactsButton } from "@/components/SaveToContactsButton";
 
 /**
- * ContactCard — the data + actions layer that every visual skin reuses.
+ * ContactCard — interim version.
  *
- * Styling here is intentionally minimal/functional: it renders the profile and wires up the
- * tap actions and Save to Contacts. The winning *visual layout* is built on top of this in a
- * later step; the data binding and save logic do not change when the skin does.
- *
- * Server component — the only interactive piece (Save to Contacts) is its own client component.
+ * This renders the migrated profile shape so the app stays deployable while the locked
+ * pastel-tabbed layout (card shell, gradient header, folder tabs, contact rows) is built on
+ * top of it. The data + save logic below is what every skin reuses.
  */
 export function ContactCard() {
-  const { name, title, company, email, phone, website, tagline, avatar, links } = profile;
-
-  // Role line: "Title · Company" / "Title" / "Company" depending on what's present.
-  const roleLine = [title, company].filter(Boolean).join(" · ");
+  const { name, title, contact, socials } = profile;
 
   return (
-    <div
-      // Set the themeable accent from the profile, scoped to the card.
-      style={profile.accent ? ({ ["--accent" as string]: profile.accent } as React.CSSProperties) : undefined}
-      className="flex w-full max-w-sm flex-col items-center gap-5 rounded-card border border-border bg-background p-8 shadow-card"
-    >
-      {/* Avatar — image if provided, otherwise initials on the accent color. */}
-      {avatar ? (
-        <Image
-          src={avatar}
-          alt={name}
-          width={96}
-          height={96}
-          className="h-24 w-24 rounded-full object-cover"
-          priority
-        />
-      ) : (
-        <div className="flex h-24 w-24 items-center justify-center rounded-full bg-accent text-2xl font-semibold text-accent-foreground">
-          {initials(name)}
-        </div>
-      )}
-
-      {/* Identity */}
+    <div className="flex w-full max-w-sm flex-col items-center gap-5 rounded-card border border-border bg-background p-8 shadow-card">
       <div className="text-center">
         <h1 className="text-xl font-semibold tracking-tight">{name}</h1>
-        {roleLine && <p className="mt-0.5 text-sm text-foreground/70">{roleLine}</p>}
-        {tagline && <p className="mt-2 text-sm text-foreground/50">{tagline}</p>}
+        <p className="mt-0.5 text-sm text-foreground/70">{title}</p>
       </div>
 
-      {/* Tap actions — email / call / website */}
       <div className="flex w-full flex-col gap-2">
-        {email && <ContactRow label="Email" value={email} href={`mailto:${email}`} />}
-        {phone && <ContactRow label="Call" value={phone} href={`tel:${phone.replace(/\s+/g, "")}`} />}
-        {website && (
-          <ContactRow
-            label="Website"
-            value={website.replace(/^https?:\/\//, "")}
-            href={website}
-            external
-          />
+        {contact.email && <Row label="Email" value={contact.email} href={`mailto:${contact.email}`} />}
+        {contact.phone && (
+          <Row label="Call" value={contact.phone} href={`tel:${contact.phone.replace(/\s+/g, "")}`} />
         )}
+        {contact.website && (
+          <Row label="Website" value={contact.website.replace(/^https?:\/\//, "")} href={contact.website} external />
+        )}
+        {socials.map((s) => (
+          <Row key={s.url} label={s.platform} value={s.handle} href={s.url} external />
+        ))}
       </div>
-
-      {/* Extra links */}
-      {links && links.length > 0 && (
-        <div className="flex w-full flex-wrap justify-center gap-2">
-          {links.map((link) => (
-            <a
-              key={link.url}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-full border border-border px-3 py-1.5 text-sm text-foreground/80 transition-colors hover:border-accent hover:text-accent"
-            >
-              {link.label}
-            </a>
-          ))}
-        </div>
-      )}
 
       <SaveToContactsButton className="mt-1 inline-flex h-12 w-full items-center justify-center rounded-full bg-accent px-6 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90" />
     </div>
   );
 }
 
-/** One tappable contact method row (email / phone / website). */
-function ContactRow({
+function Row({
   label,
   value,
   href,

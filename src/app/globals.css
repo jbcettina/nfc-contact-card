@@ -16,6 +16,9 @@
   --accent: #2563eb;
   --accent-foreground: #ffffff;
 
+  /* Background behind the fist-bump intro overlay (retokenized in the skin pass). */
+  --intro-bg: #2563eb;
+
   /* Surface tokens used by the card. */
   --card-radius: 1.25rem;
   --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 12px 32px rgba(0, 0, 0, 0.08);

@@ -7,6 +7,10 @@
  *
  * We emit vCard 3.0 — the most broadly compatible version across iOS Contacts, Android,
  * and desktop address books.
+ *
+ * The gotcha (see FOUNDATION-PLAN §6): the displayed @handles are cosmetic. A useful saved
+ * contact needs resolvable data, so the vCard carries the real contact fields PLUS each
+ * social's URL — so the saved contact opens with a callable number, an email, and working links.
  */
 import type { Profile } from "@/data/profile";
 
@@ -34,21 +38,24 @@ function splitName(name: string): { family: string; given: string } {
  */
 export function buildVCard(profile: Profile): string {
   const { family, given } = splitName(profile.name);
+  const { phone, email, website } = profile.contact;
   const lines: string[] = ["BEGIN:VCARD", "VERSION:3.0"];
 
   // N (structured) and FN (display) are the only required fields.
   lines.push(`N:${escape(family)};${escape(given)};;;`);
   lines.push(`FN:${escape(profile.name)}`);
 
-  if (profile.company) lines.push(`ORG:${escape(profile.company)}`);
   if (profile.title) lines.push(`TITLE:${escape(profile.title)}`);
-  if (profile.email) lines.push(`EMAIL;TYPE=INTERNET,PREF:${escape(profile.email)}`);
-  if (profile.phone) lines.push(`TEL;TYPE=CELL:${escape(profile.phone)}`);
-  if (profile.website) lines.push(`URL:${escape(profile.website)}`);
+  if (phone) lines.push(`TEL;TYPE=CELL:${escape(phone)}`);
+  if (email) lines.push(`EMAIL;TYPE=INTERNET,PREF:${escape(email)}`);
+  if (website) lines.push(`URL:${escape(website)}`);
 
-  // Extra links become additional URL entries, labelled where the address book supports it.
-  for (const link of profile.links ?? []) {
-    lines.push(`URL;TYPE=${escape(link.label)}:${escape(link.url)}`);
+  // Social profiles: X-SOCIALPROFILE is the cleanest spec-compliant form and is recognized
+  // by Apple Contacts; the labelled URL keeps the link useful everywhere else too.
+  for (const social of profile.socials) {
+    lines.push(
+      `X-SOCIALPROFILE;TYPE=${escape(social.platform.toLowerCase())}:${escape(social.url)}`,
+    );
   }
 
   lines.push("END:VCARD");
