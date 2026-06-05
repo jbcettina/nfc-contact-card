@@ -57,27 +57,30 @@ export type Profile = {
   theme?: ThemeKey;
 };
 
+// Sample data — a fictional persona so this public template ships with no real contact info.
+// Replace every field below with your own to make the card yours (uses the reserved 555-01xx
+// phone range and example.com on purpose, so it's obvious these are placeholders).
 export const profile: Profile = {
-  name: "Joel Cettina",
-  title: "Engineering Leader",
+  name: "Maya Chen",
+  title: "Product Engineer",
   avatar: null, // drop a file in public/ and point here (e.g. "/avatar.jpg")
   contact: {
-    phone: "+1 555 234 5678",
-    email: "jbcettina@gmail.com",
-    website: "https://example.com",
+    phone: "+1 (415) 555-0186",
+    email: "maya@example.com",
+    website: "https://maya.example.com",
   },
   socials: [
-    { platform: "X", handle: "@jbcettina", url: "https://x.com/jbcettina", icon: "x" },
+    { platform: "X", handle: "@mayabuilds", url: "https://x.com/mayabuilds", icon: "x" },
     {
       platform: "GitHub",
-      handle: "@jbcettina",
-      url: "https://github.com/jbcettina",
+      handle: "@mayachen",
+      url: "https://github.com/mayachen",
       icon: "github",
     },
     {
       platform: "LinkedIn",
-      handle: "@jbcettina",
-      url: "https://linkedin.com/in/jbcettina",
+      handle: "@mayachen",
+      url: "https://linkedin.com/in/mayachen",
       icon: "linkedin",
     },
   ],

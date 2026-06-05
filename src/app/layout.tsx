@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { profile } from "@/data/profile";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Contact Card",
-  description: "A tap-to-share digital contact card.",
+  title: `${profile.name} · Contact Card`,
+  description: `Save ${profile.name} to your contacts.`,
 };
 
 export default function RootLayout({
