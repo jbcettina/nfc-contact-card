@@ -49,7 +49,15 @@ src/
     globals.css         Tailwind import + design tokens (@theme)
     api/
       health/route.ts   Example route handler (the dynamism convention)
-  components/           UI components (ContactCard, SaveToContactsButton, FistBumpIntro, …)
+  components/
+    ContactCard.tsx     Card shell (server) — composes the pieces below
+    GradientHeader.tsx  Pastel mesh header (radial-gradients from --mesh-* tokens)
+    Squircle.tsx        Rounded-square avatar (image cover-fit or initials)
+    CardTabs.tsx        Folder tabs (About/Bio/Contact), Contact default (client)
+    ContactRows.tsx     Contact + social rows for the Contact tab
+    icons.tsx           Maps profile icon keys → glyphs (react-icons)
+    SaveToContactsButton.tsx  Client-side .vcf download
+    FistBumpIntro.tsx   Intro overlay that resolves into the card (client)
   data/
     profile.ts          ← THE single source of truth — edit this to make it yours
   lib/
