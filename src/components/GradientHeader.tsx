@@ -2,14 +2,16 @@ import { profile } from "@/data/profile";
 import { Squircle } from "@/components/Squircle";
 
 /**
- * GradientHeader — the pastel mesh header at the top of the card.
+ * GradientHeader — the pastel mesh region at the top of the card.
  *
- * The mesh is composed from layered radial-gradients here (the component owns the gradient
- * POSITIONS); the colors come from CSS variables (--mesh-*), so a theme swap recolors it
- * without touching this file. Asset-free and cloneable; if pixel-accuracy is ever needed,
- * swap the `backgroundImage` below for a single Figma-exported image (FOUNDATION-PLAN §8).
+ * Owns the gradient so it sits continuously behind both the identity block (avatar / name /
+ * title) and the folder tab row passed in as `children`. The mesh is composed from layered
+ * radial-gradients here (the component owns the gradient POSITIONS); the colors come from CSS
+ * variables (--mesh-*), so a theme swap recolors it without touching this file. Asset-free and
+ * cloneable; swap `backgroundImage` for one Figma-exported image if pixel-accuracy is ever
+ * needed (FOUNDATION-PLAN §8).
  */
-export function GradientHeader() {
+export function GradientHeader({ children }: { children?: React.ReactNode }) {
   return (
     <div
       style={{
@@ -20,11 +22,13 @@ export function GradientHeader() {
           "radial-gradient(130% 120% at 100% 100%, var(--mesh-pink), transparent 62%)",
         ].join(", "),
       }}
-      className="flex flex-col items-center px-6 pt-10 pb-7"
     >
-      <Squircle src={profile.avatar} name={profile.name} />
-      <h1 className="mt-4 text-[26px] font-bold leading-tight text-name">{profile.name}</h1>
-      <p className="mt-1 text-[16px] text-title">{profile.title}</p>
+      <div className="flex flex-col items-center px-6 pt-10 pb-6">
+        <Squircle src={profile.avatar} name={profile.name} />
+        <h1 className="mt-4 text-[26px] font-bold leading-tight text-name">{profile.name}</h1>
+        <p className="mt-1 text-[16px] text-title">{profile.title}</p>
+      </div>
+      {children}
     </div>
   );
 }
