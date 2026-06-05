@@ -32,7 +32,7 @@ export function CardTabs({ contact }: { contact: React.ReactNode }) {
               role="tab"
               aria-selected={isActive}
               onClick={() => setActive(tab)}
-              className={`flex-1 rounded-t-2xl px-4 pt-2.5 pb-3 text-sm font-semibold transition-colors ${
+              className={`flex-1 rounded-t-2xl px-4 pt-2.5 pb-3 text-sm font-semibold transition-colors sm:text-base ${
                 isActive
                   ? "bg-panel text-name"
                   : "text-name/45 hover:text-name/70"
@@ -45,7 +45,7 @@ export function CardTabs({ contact }: { contact: React.ReactNode }) {
       </div>
 
       {/* White content panel — merges with the active tab above it. */}
-      <div className="min-h-52 bg-panel px-6 pt-5 pb-2">
+      <div className="min-h-52 bg-panel px-6 pt-5 pb-2 sm:px-7">
         {active === "Contact" ? (
           contact
         ) : (

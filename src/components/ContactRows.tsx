@@ -63,11 +63,11 @@ function Row({
       <a
         href={href}
         {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-        className="flex items-center gap-4 rounded-xl px-1 transition-colors hover:bg-black/[0.03]"
+        className="flex items-center gap-4 rounded-xl px-1 transition-colors hover:bg-black/[0.03] sm:gap-5"
         style={{ minHeight: "var(--row-h)" }}
       >
         <Icon size={24} className="shrink-0 text-icon" aria-hidden />
-        <span className="truncate text-[16px] font-semibold text-name">{value}</span>
+        <span className="truncate text-[16px] font-semibold text-name sm:text-[17px]">{value}</span>
       </a>
     </li>
   );

@@ -23,10 +23,12 @@ export function GradientHeader({ children }: { children?: React.ReactNode }) {
         ].join(", "),
       }}
     >
-      <div className="flex flex-col items-center px-6 pt-10 pb-6">
+      <div className="flex flex-col items-center px-6 pt-10 pb-6 sm:pt-12 sm:pb-7">
         <Squircle src={profile.avatar} name={profile.name} />
-        <h1 className="mt-4 text-[26px] font-bold leading-tight text-name">{profile.name}</h1>
-        <p className="mt-1 text-[16px] text-title">{profile.title}</p>
+        <h1 className="mt-4 text-[26px] font-bold leading-tight text-name sm:mt-5 sm:text-[30px] lg:text-[34px]">
+          {profile.name}
+        </h1>
+        <p className="mt-1 text-[16px] text-title sm:text-[17px] lg:text-[18px]">{profile.title}</p>
       </div>
       {children}
     </div>

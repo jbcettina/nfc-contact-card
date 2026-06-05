@@ -16,15 +16,15 @@ export function ContactCard() {
   return (
     <div
       data-theme={profile.theme}
-      className="w-full max-w-[460px] overflow-hidden rounded-card bg-panel shadow-card"
+      className="w-full max-w-[460px] overflow-hidden rounded-card bg-panel shadow-card sm:max-w-[540px] lg:max-w-[620px]"
     >
       <GradientHeader>
         <CardTabs contact={<ContactRows />} />
       </GradientHeader>
 
       {/* Save bar — outside the tabs so it stays visible on every tab. */}
-      <div className="bg-panel px-6 pt-2 pb-6">
-        <SaveToContactsButton className="inline-flex h-13 w-full items-center justify-center gap-2 rounded-full bg-accent px-6 text-[15px] font-semibold text-accent-foreground transition-opacity hover:opacity-90" />
+      <div className="bg-panel px-6 pt-2 pb-6 sm:px-7 sm:pb-7">
+        <SaveToContactsButton className="inline-flex h-13 w-full items-center justify-center gap-2 rounded-full bg-accent px-6 text-[15px] font-semibold text-accent-foreground transition-opacity hover:opacity-90 sm:h-14 sm:text-base" />
       </div>
     </div>
   );

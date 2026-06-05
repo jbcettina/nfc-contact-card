@@ -82,9 +82,11 @@ export function FistBumpIntro({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      {/* The card, revealed underneath. Fades + scales in as the overlay leaves. */}
+      {/* The card, revealed underneath. Fades + scales in as the overlay leaves.
+          Full-width + centered so the card's own responsive max-width governs its size
+          (without this, the card would collapse to its content width). */}
       <div
-        className={`transition-all duration-[400ms] ease-out ${
+        className={`flex w-full justify-center transition-all duration-[400ms] ease-out ${
           phase === "intro" ? "scale-95 opacity-0" : "scale-100 opacity-100"
         }`}
       >
