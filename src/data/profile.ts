@@ -53,6 +53,8 @@ export type Profile = {
   };
   /** Social rows — display a handle, carry a real URL (also saved into the vCard). */
   socials: Social[];
+  /** Label/value rows shown on the About tab. */
+  about?: { label: string; value: string }[];
   /** Free-text bio shown on the Bio tab. Use blank lines to split into paragraphs. */
   bio?: string;
   /** Active color theme. Optional; defaults to the base palette. */
@@ -84,6 +86,24 @@ export const profile: Profile = {
       handle: "@mayachen",
       url: "https://linkedin.com/in/mayachen",
       icon: "linkedin",
+    },
+  ],
+  about: [
+    {
+      label: "Strengths",
+      value: "Shipping fast without breaking things, and making complex systems feel simple.",
+    },
+    {
+      label: "Growth areas",
+      value: "Learning to say no to good ideas so the great ones actually ship.",
+    },
+    {
+      label: "Toolkit",
+      value: "TypeScript, React & Next.js, Postgres — and far too many terminal aliases.",
+    },
+    {
+      label: "Outside work",
+      value: "Trail runs, ceramics, and a houseplant collection that's growing faster than my free time.",
     },
   ],
   bio:

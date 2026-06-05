@@ -23,7 +23,7 @@ export function Squircle({
   return (
     <div
       className={`overflow-hidden rounded-[30%] bg-panel shadow-[0_8px_24px_-8px_rgba(20,20,20,0.25)] ring-1 ring-black/5 ${
-        className ?? "size-[88px] sm:size-[104px] lg:size-[116px]"
+        className ?? "size-[76px] sm:size-[104px] lg:size-[116px]"
       }`}
     >
       {src ? (

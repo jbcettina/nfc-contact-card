@@ -19,13 +19,15 @@ type Tab = (typeof TABS)[number];
 
 export function CardTabs({
   contact,
+  about,
   bio,
 }: {
   contact: React.ReactNode;
+  about?: React.ReactNode;
   bio?: React.ReactNode;
 }) {
   const [active, setActive] = useState<Tab>("Contact");
-  const panels: Partial<Record<Tab, React.ReactNode>> = { Contact: contact, Bio: bio };
+  const panels: Partial<Record<Tab, React.ReactNode>> = { Contact: contact, About: about, Bio: bio };
 
   return (
     <div>
@@ -52,10 +54,15 @@ export function CardTabs({
       </div>
 
       {/* White content panel — merges with the active tab above it. */}
-      <div className="min-h-52 bg-panel px-6 pt-5 pb-2 sm:px-7">
-        {panels[active] ?? (
-          <p className="pt-8 text-center text-sm text-title">{active} is coming soon.</p>
-        )}
+      {/* Locked panel height so switching tabs is a content swap, not a layout jump.
+          --tab-panel-h is set in globals.css and sized to hold the tallest panel (Contact). */}
+      <div className="bg-panel px-6 pt-5 pb-2 sm:px-7" style={{ minHeight: "var(--tab-panel-h)" }}>
+        {/* `key` forces a remount on tab change so the fade-in animation re-runs. */}
+        <div key={active} className="animate-[fade-in_180ms_ease-out]">
+          {panels[active] ?? (
+            <p className="pt-8 text-center text-sm text-title">{active} is coming soon.</p>
+          )}
+        </div>
       </div>
     </div>
   );

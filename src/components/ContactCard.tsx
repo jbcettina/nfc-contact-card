@@ -2,6 +2,7 @@ import { profile } from "@/data/profile";
 import { GradientHeader } from "@/components/GradientHeader";
 import { CardTabs } from "@/components/CardTabs";
 import { ContactRows } from "@/components/ContactRows";
+import { AboutPanel } from "@/components/AboutPanel";
 import { BioPanel } from "@/components/BioPanel";
 import { SaveToContactsButton } from "@/components/SaveToContactsButton";
 
@@ -20,7 +21,7 @@ export function ContactCard() {
       className="w-full max-w-[460px] overflow-hidden rounded-card bg-panel shadow-card sm:max-w-[540px] lg:max-w-[620px]"
     >
       <GradientHeader>
-        <CardTabs contact={<ContactRows />} bio={<BioPanel />} />
+        <CardTabs contact={<ContactRows />} about={<AboutPanel />} bio={<BioPanel />} />
       </GradientHeader>
 
       {/* Save bar — outside the tabs so it stays visible on every tab. */}

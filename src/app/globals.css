@@ -40,7 +40,10 @@
   --border: rgba(20, 20, 20, 0.08);
 
   /* Rhythm */
-  --row-h: 68px; /* contact-row height */
+  --row-h: 60px; /* contact-row height */
+  /* Tab panel height — locked so switching tabs swaps content without a layout jump.
+     Sized to hold the tallest panel (currently About) plus a hair of breathing room. */
+  --tab-panel-h: 432px;
 }
 
 /*
@@ -76,4 +79,16 @@ body {
   background: var(--page-bg);
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Used by CardTabs to fade in the active panel's content after a tab switch. */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
