@@ -16,7 +16,7 @@ export function ContactCard() {
   return (
     <div
       data-theme={profile.theme}
-      className="w-full max-w-[400px] overflow-hidden rounded-card bg-panel shadow-card"
+      className="w-full max-w-[460px] overflow-hidden rounded-card bg-panel shadow-card"
     >
       <GradientHeader>
         <CardTabs contact={<ContactRows />} />
