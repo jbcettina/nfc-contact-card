@@ -1,6 +1,7 @@
 import { profile } from "@/data/profile";
 import { GradientHeader } from "@/components/GradientHeader";
 import { CardTabs } from "@/components/CardTabs";
+import { ContactRows } from "@/components/ContactRows";
 
 /**
  * ContactCard — the card shell.
@@ -17,12 +18,7 @@ export function ContactCard() {
       className="w-full max-w-[400px] overflow-hidden rounded-card bg-panel shadow-card"
     >
       <GradientHeader>
-        <CardTabs
-          contact={
-            // Placeholder until the contact rows land in the next step.
-            <p className="pt-8 text-center text-sm text-title">Contact details go here.</p>
-          }
-        />
+        <CardTabs contact={<ContactRows />} />
       </GradientHeader>
     </div>
   );
