@@ -36,9 +36,11 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
-      {/* min-h-dvh tracks the DYNAMIC viewport, which excludes browser chrome like iOS Safari's
-          bottom URL bar. Plain 100vh would let the card slide under that bar. */}
-      <body className="flex min-h-dvh flex-col">{children}</body>
+      {/* min-h-svh tracks the SMALL viewport — the visible area when browser chrome is shown
+          (iOS Safari's URL bar in particular). Sizing to this guarantees layout fits even in
+          the worst-case visible window, so a sticky bottom bar lands above the URL bar
+          without any vh/dvh math gymnastics. */}
+      <body className="flex min-h-svh flex-col">{children}</body>
     </html>
   );
 }
