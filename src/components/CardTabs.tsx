@@ -10,15 +10,22 @@ import { useState } from "react";
  * directly below it (the folder look). Per FOUNDATION-PLAN §8 we keep the corner-tuck
  * directional — a clean white active tab over the gradient reads the same at phone size.
  *
- * In Tier A only the Contact panel has content; About and Bio are intentionally placeholders
- * (they become audience feature fodder). Contact content is passed in as `contact` so this
- * stays a thin, reusable tab shell.
+ * Panel content is passed in as slots (`contact`, `bio`) so this stays a thin, reusable tab
+ * shell. Any tab without content shows a "coming soon" placeholder (About is left as feature
+ * fodder).
  */
 const TABS = ["Contact", "About", "Bio"] as const;
 type Tab = (typeof TABS)[number];
 
-export function CardTabs({ contact }: { contact: React.ReactNode }) {
+export function CardTabs({
+  contact,
+  bio,
+}: {
+  contact: React.ReactNode;
+  bio?: React.ReactNode;
+}) {
   const [active, setActive] = useState<Tab>("Contact");
+  const panels: Partial<Record<Tab, React.ReactNode>> = { Contact: contact, Bio: bio };
 
   return (
     <div>
@@ -46,12 +53,8 @@ export function CardTabs({ contact }: { contact: React.ReactNode }) {
 
       {/* White content panel — merges with the active tab above it. */}
       <div className="min-h-52 bg-panel px-6 pt-5 pb-2 sm:px-7">
-        {active === "Contact" ? (
-          contact
-        ) : (
-          <p className="pt-8 text-center text-sm text-title">
-            {active} is coming soon.
-          </p>
+        {panels[active] ?? (
+          <p className="pt-8 text-center text-sm text-title">{active} is coming soon.</p>
         )}
       </div>
     </div>

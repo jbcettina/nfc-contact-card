@@ -53,6 +53,8 @@ export type Profile = {
   };
   /** Social rows — display a handle, carry a real URL (also saved into the vCard). */
   socials: Social[];
+  /** Free-text bio shown on the Bio tab. Use blank lines to split into paragraphs. */
+  bio?: string;
   /** Active color theme. Optional; defaults to the base palette. */
   theme?: ThemeKey;
 };
@@ -84,6 +86,13 @@ export const profile: Profile = {
       icon: "linkedin",
     },
   ],
+  bio:
+    "Product engineer who turns caffeine into shipped features and has strong, " +
+    "mostly-correct opinions about keyboard shortcuts.\n\n" +
+    "Once debugged a production outage from a chairlift. Collects houseplants faster " +
+    "than she can keep them alive, and is convinced the rubber duck on her desk has " +
+    "reviewed more code than she has.\n\n" +
+    "Will trade you a sticker for a good taco recommendation. 🌮",
 };
 
 /** Initials derived from the name — used for the placeholder avatar squircle. */
