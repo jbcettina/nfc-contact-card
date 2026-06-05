@@ -1,10 +1,13 @@
 import { ContactCard } from "@/components/ContactCard";
+import { FistBumpIntro } from "@/components/FistBumpIntro";
 
-// Home — composes the contact card. The fist-bump intro overlay is added in a later step.
+// Home — the fist-bump intro plays on a fresh visit, then resolves into the contact card.
 export default function Home() {
   return (
     <main className="flex flex-1 items-center justify-center p-6">
-      <ContactCard />
+      <FistBumpIntro>
+        <ContactCard />
+      </FistBumpIntro>
     </main>
   );
 }
