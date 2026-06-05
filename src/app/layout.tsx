@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { profile } from "@/data/profile";
@@ -18,6 +18,14 @@ export const metadata: Metadata = {
   description: `Save ${profile.name} to your contacts.`,
 };
 
+// viewport-fit=cover lets us read env(safe-area-inset-*) on iOS, so the card can avoid
+// the home-indicator strip and stay clear of browser chrome.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,9 +34,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      {/* min-h-dvh tracks the DYNAMIC viewport, which excludes browser chrome like iOS Safari's
+          bottom URL bar. Plain 100vh would let the card slide under that bar. */}
+      <body className="flex min-h-dvh flex-col">{children}</body>
     </html>
   );
 }

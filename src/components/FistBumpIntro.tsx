@@ -20,7 +20,8 @@ import type { DotLottie } from "@lottiefiles/dotlottie-react";
  */
 
 const SESSION_KEY = "fist-bump-played";
-const INTRO_MAX_MS = 1800; // cap on the intro; transition fires by now even if not "complete"
+const INTRO_MIN_MS = 2400; // floor: stay visible at least this long even if the animation finishes earlier
+const INTRO_MAX_MS = 3500; // ceiling: transition fires by now even if the animation never completes
 const LEAVE_MS = 400; // overlay fade-out / card fade-in duration (keep in sync with classes)
 
 type Phase = "intro" | "leaving" | "done";
@@ -31,16 +32,29 @@ export function FistBumpIntro({ children }: { children: React.ReactNode }) {
   const [phase, setPhase] = useState<Phase>("intro");
   const maxTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const leaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const minTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Set true once INTRO_MIN_MS has elapsed; complete events before that wait this out.
+  const minElapsed = useRef(false);
+  // Set true if the Lottie's "complete" event fired before INTRO_MIN_MS.
+  const completedEarly = useRef(false);
 
   // Begin the transition from overlay → card. Safe to call more than once.
   const startLeaving = useCallback(() => {
     if (maxTimer.current) clearTimeout(maxTimer.current);
+    if (minTimer.current) clearTimeout(minTimer.current);
     setPhase((p) => {
       if (p !== "intro") return p;
       leaveTimer.current = setTimeout(() => setPhase("done"), LEAVE_MS);
       return "leaving";
     });
   }, []);
+
+  // Called when the animation reaches its end. If we're past the minimum display time, leave
+  // immediately; otherwise note the early completion and let the min-timer take over.
+  const onAnimationComplete = useCallback(() => {
+    if (minElapsed.current) startLeaving();
+    else completedEarly.current = true;
+  }, [startLeaving]);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
@@ -59,23 +73,30 @@ export function FistBumpIntro({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    // Fresh visit → mark played (so refresh/nav won't replay) and arm the safety cap.
+    // Fresh visit → mark played (so refresh/nav won't replay) and arm both timers:
+    //  • min-timer guarantees the splash sits long enough to be seen even if the Lottie is fast
+    //  • max-timer is the safety cap if the Lottie never completes for any reason
     sessionStorage.setItem(SESSION_KEY, "1");
+    minTimer.current = setTimeout(() => {
+      minElapsed.current = true;
+      if (completedEarly.current) startLeaving();
+    }, INTRO_MIN_MS);
     maxTimer.current = setTimeout(startLeaving, INTRO_MAX_MS);
 
     return () => {
       if (maxTimer.current) clearTimeout(maxTimer.current);
+      if (minTimer.current) clearTimeout(minTimer.current);
       if (leaveTimer.current) clearTimeout(leaveTimer.current);
     };
   }, [startLeaving]);
 
-  // Wire the animation's "complete" event to start the transition.
+  // Wire the animation's "complete" event — leaves immediately if past the min, otherwise waits.
   const handleRef = useCallback(
     (dotLottie: DotLottie | null) => {
       if (!dotLottie) return;
-      dotLottie.addEventListener("complete", startLeaving);
+      dotLottie.addEventListener("complete", onAnimationComplete);
     },
-    [startLeaving],
+    [onAnimationComplete],
   );
 
   const leaving = phase === "leaving";
@@ -104,7 +125,10 @@ export function FistBumpIntro({ children }: { children: React.ReactNode }) {
           <DotLottieReact
             src="/animations/fist-bump.lottie"
             autoplay
-            loop={false}
+            // Loop so the animation stays alive during the minimum display window — otherwise
+            // it'd freeze on the last frame. We leave on the first "complete" past INTRO_MIN_MS,
+            // so users still see a natural full play, not a chopped mid-animation cut.
+            loop
             dotLottieRefCallback={handleRef}
             className="h-64 w-64"
           />
