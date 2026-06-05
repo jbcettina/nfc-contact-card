@@ -1,13 +1,35 @@
 @import "tailwindcss";
 
+/*
+ * Design tokens.
+ *
+ * Colors, radii, and shadows are defined here as CSS variables and exposed to Tailwind via
+ * @theme, so a visual skin can be swapped by changing token values rather than rewriting
+ * components. The card's --accent is overridden at runtime from src/data/profile.ts.
+ * See TECH.md → "Theming via tokens".
+ */
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Accent — default; the page sets this from profile.accent at runtime. */
+  --accent: #2563eb;
+  --accent-foreground: #ffffff;
+
+  /* Surface tokens used by the card. */
+  --card-radius: 1.25rem;
+  --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 12px 32px rgba(0, 0, 0, 0.08);
+  --border: rgba(0, 0, 0, 0.08);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --radius-card: var(--card-radius);
+  --shadow-card: var(--card-shadow);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -16,11 +38,13 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --border: rgba(255, 255, 255, 0.12);
+    --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px rgba(0, 0, 0, 0.5);
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
